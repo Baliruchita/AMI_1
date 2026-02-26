@@ -2,8 +2,7 @@ name: Build Hardened SAP BI AMI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   terraform:
@@ -25,6 +24,7 @@ jobs:
 
       - name: Create SSH Private Key
         run: |
+          mkdir -p terraform
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > terraform/my-key.pem
           chmod 400 terraform/my-key.pem
 
@@ -40,4 +40,4 @@ jobs:
             -var="instance_id=${{ secrets.INSTANCE_ID }}" \
             -var="instance_public_ip=${{ secrets.INSTANCE_PUBLIC_IP }}" \
             -var="ssh_user=ec2-user" \
-            -var="ami_name=sap-bi-prod-ami-$(date +%Y%m%d%H%M%S)"
+            -var="ami_name=sap-bi-prod-ami"
